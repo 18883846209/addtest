@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demo</title>
+  <script src="https://cdn.bootcss.com/babel-polyfill/7.0.0-beta.49/polyfill.min.js"></script>
+  <script src="./excelUtil.js"></script>
+  <script src="./export2Excel.js"></script>
+</head>
+<body>
+  <button id="btn1">点击下载1</button>
+  <button id="btn2">点击下载2</button>
+  <div id="test"></div>
+  <script type="text/javascript">
+    var ws = new WebSocket("wss://echo.websocket.org");
+    ws.onopen = function(evt) { 
+      console.log("Connection open ..."); 
+      ws.send("Hello WebSockets!333");
+    };
+
+    ws.onmessage = function(evt) {
+      console.log( "Received Message: " + evt.data);
+      document.getElementById('test').innerHTML = evt.data;
+      // ws.close();
+    };
+
+    ws.onclose = function(evt) {
+      console.log("Connection closed.");
+    };
+    var data = [
+      {
+        a:"123",
+        b:"234",
+        pic: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=602076004,4209938077&fm=27&gp=0.jpg'
+      },
+    ]
+    //传入参数有4个,
+    // 第一个是文件名
+    // 第二个是数据数组
+    // 第三个是最后一列匹配换行的key，不传则默认是数组的最后一个key
+    // 第四个是表格的标题字段名，不传则默认为数组的keys
+    for (var i = 0; i < 5000000; i++) {
+      data.push({
+        a:"123",
+        b:"234",
+        // pic: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=602076004,4209938077&fm=27&gp=0.jpg'
+      });
+    }
+    document.getElementById('btn1').onclick = function () {
+      outputExcel("demo.csv",data,"b",["第一列","第二列"]);
+    }
+    // document.getElementById('btn2').onclick = function () { 
+    //   exportToExcel(tHeader, tbody, 'test');
+    // }
+  </script>
+</body>
+</html>
